@@ -37,6 +37,10 @@ char getValidCode(char currentCode, char lastCode) {
     return '0';
 }
 
+bool ContinueGeneratingSoundex(int index, int soundexIndex) {
+    return name[index] != '\0' && soundexIndex < 4;
+}
+
 void generateSoundex(const char *name, char *soundex) {
     soundex[0] = toupper(name[0]);
     soundex[1] = soundex[2] = soundex[3] = '0'; 
@@ -44,7 +48,7 @@ void generateSoundex(const char *name, char *soundex) {
     char lastCode = '0';
     int soundexIndex = 1;
 
-    for (int i = 1; shouldContinueGeneratingSoundex(i, soundexIndex); ++i) {
+    for (int i = 1; ContinueGeneratingSoundex(i, soundexIndex); ++i) {
         char currentCode = getSoundexCode(name[i]);
         char validCode = getValidCode(currentCode, lastCode);
 
