@@ -29,29 +29,30 @@ char getSoundexCode(char c) {
 
         return '0'; 
 }
-void generateSoundex(const char *name, char *soundex) {
-    if (name[0] == '\0') {
-        soundex[0] = '\0';
-        return;
+
+char getValidCode(char currentCode, char lastCode) {
+    if (currentCode != '0' && currentCode != lastCode) {
+        return currentCode;
     }
+    return '0';
+}
 
-    size_t len = strlen(name);
-    char prevCode = '0';
-    size_t index = 0;
+void generateSoundex(const char *name, char *soundex) {
+   
+    soundex[0] = toupper(name[0]);
+    soundex[1] = soundex[2] = soundex[3] = '0'; 
+    soundex[4] = '\0'; 
+    char lastCode = '0';
+    int soundexIndex = 1;
 
-    soundex[index++] = toupper(name[0]);
-    prevCode = getSoundexCode(name[0]);
+    for (int i = 1; name[i] != '\0' && soundexIndex < 4; ++i) {
+        char currentCode = getSoundexCode(name[i]);
+        char validCode = getValidCode(currentCode, lastCode);
 
-    for (size_t i = 1; i < len && index < MAX_LENGTH - 1; ++i) {
-        char code = getSoundexCode(name[i]);
-        if (code != '0' && code != prevCode) {
-            soundex[index++] = code;
-            prevCode = code;
+        if (validCode != '0') {
+            soundex[soundexIndex++] = validCode;
+            lastCode = validCode;
         }
     }
-
-    while (index < MAX_LENGTH) {
-        soundex[index++] = '0';
-    }
-    soundex[index] = '\0'; // Null-terminate the result
 }
+
