@@ -1,34 +1,48 @@
+#include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 
-typedef struct {
-    char sound;
-    char value;
-} SoundexMapping;
+#define SOUNDDEX_LENGTH 4
 
-static const SoundexMapping soundexMappings[] = {
-    {'B', '1'}, {'F', '1'}, {'P', '1'}, {'V', '1'},
-    {'C', '2'}, {'G', '2'}, {'J', '2'}, {'K', '2'}, {'Q', '2'},
-    {'S', '2'}, {'X', '2'}, {'Z', '2'},
-    {'D', '3'}, {'T', '3'},
-    {'L', '4'},
-    {'M', '5'}, {'N', '5'},
-    {'R', '6'}
+//array mapping
+static const char soundexMapping[26] = {
+    '0', // A
+    '1', // B
+    '0', // C
+    '0', // D
+    '0', // E
+    '1', // F
+    '2', // G
+    '0', // H
+    '0', // I
+    '1', // J
+    '2', // K
+    '4', // L
+    '5', // M
+    '5', // N
+    '0', // O
+    '1', // P
+    '2', // Q
+    '6', // R
+    '2', // S
+    '3', // T
+    '0', // U
+    '1', // V
+    '0', // W
+    '2', // X
+    '0', // Y
+    '2'  // Z
 };
 
-#define MAPPING_COUNT (sizeof(soundexMappings) / sizeof(SoundexMapping))
 
 char getSoundexCode(char c) {
-    c = toupper(c);
-
-    for (int i = 0; i < MAPPING_COUNT; i++) {
-        if (soundexMappings[i].sound == c) {
-            return soundexMappings[i].value;
-        }
+    if (isalpha(c)) {
+        c = toupper(c);
+        return soundexMapping[c - 'A'];
     }
-
-    return '0'; 
+    return '0'; // For non-alphabetic characters
 }
+
 void initializeSoundex(const char* name, char* soundex) {
     if (name[0] != '\0') {
         soundex[0] = toupper(name[0]);
@@ -45,6 +59,7 @@ char getFirstCharCode(const char* name) {
     }
     return '\0';
 }
+
 
 void addSoundexCode(char* soundex, char code, char* prevCode) {
     if (code != '0' && code != *prevCode) {
@@ -76,7 +91,6 @@ void padSoundex(char* soundex) {
     }
     soundex[SOUNDDEX_LENGTH - 1] = '\0'; // Null-terminate
 }
-
 
 void generateSoundex(const char* name, char* result) {
     if (name[0] != '\0') {
