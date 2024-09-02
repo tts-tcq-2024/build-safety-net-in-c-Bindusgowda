@@ -1,5 +1,5 @@
 #include <ctype.h>
-#include<string.h>
+#include <string.h>
 
 typedef struct {
     char sound;
@@ -27,7 +27,7 @@ char getSoundexCode(char c) {
         }
     }
 
-        return '0'; 
+    return '0'; 
 }
 
 char getValidCode(char currentCode, char lastCode) {
@@ -37,11 +37,13 @@ char getValidCode(char currentCode, char lastCode) {
     return '0';
 }
 
-void generateSoundex(const char *name, char *soundex) {
-   
+void initializeSoundex(char *soundex, const char *name) {
     soundex[0] = toupper(name[0]);
     soundex[1] = soundex[2] = soundex[3] = '0'; 
-    soundex[4] = '\0'; 
+    soundex[4] = '\0';
+}
+
+void processName(const char *name, char *soundex) {
     char lastCode = '0';
     int soundexIndex = 1;
 
@@ -54,5 +56,10 @@ void generateSoundex(const char *name, char *soundex) {
             lastCode = validCode;
         }
     }
+}
+
+void generateSoundex(const char *name, char *soundex) {
+    initializeSoundex(soundex, name);
+    processName(name, soundex);
 }
 
