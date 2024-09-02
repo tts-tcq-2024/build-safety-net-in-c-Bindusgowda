@@ -55,5 +55,3 @@ void generateSoundex(const char *name, char *soundex) {
         }
     }
 }
-
-
