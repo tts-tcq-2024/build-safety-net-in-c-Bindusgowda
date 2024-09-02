@@ -37,6 +37,10 @@ char getValidCode(char currentCode, char lastCode) {
     return '0';
 }
 
+bool isValidCode(char currentCode, char lastCode) {
+    return currentCode != '0' && currentCode != lastCode;
+}
+
 void generateSoundex(const char *name, char *soundex) {
     soundex[0] = toupper(name[0]);
     soundex[1] = soundex[2] = soundex[3] = '0';
@@ -53,8 +57,4 @@ void generateSoundex(const char *name, char *soundex) {
             lastCode = currentCode;
         }
     }
-}
-
-bool isValidCode(char currentCode, char lastCode) {
-    return currentCode != '0' && currentCode != lastCode;
 }
