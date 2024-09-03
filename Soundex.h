@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <gtest/gtest.h>
 #include<string.h>
  
 typedef struct {
