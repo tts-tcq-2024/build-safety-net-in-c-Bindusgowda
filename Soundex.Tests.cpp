@@ -26,10 +26,10 @@ TEST(SoudexTestsuite, testSoundex) {
 	generateSoundex("Aaaaaa", soundex);
 	ASSERT_EQ(strcmp(soundex, "A000"), 0);
     
-    generateSoundex("sOmeTeSt", soundex);
+        generateSoundex("sOmeTeSt", soundex);
 	ASSERT_EQ(strcmp(soundex, "S530"), 0);
     
-    generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
+        generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
 	ASSERT_EQ(strcmp(soundex, "A123"), 0);
 
 }
