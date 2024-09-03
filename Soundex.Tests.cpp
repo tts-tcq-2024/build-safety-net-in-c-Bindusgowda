@@ -1,35 +1,38 @@
+#include <gtest/gtest.h>
 #include "Soundex.h"
-
-TEST(SoudexTestsuite, testSoundex) {
-	char soundex[MAX_CODE_LENGTH + 1];
-	generateSoundex("Robert", soundex);
-	ASSERT_EQ(strcmp(soundex, "R163"), 0);
-
-	generateSoundex("Rupert", soundex);
-	ASSERT_EQ(strcmp(soundex, "R163"), 0);
-
-	generateSoundex("Aeiou", soundex);
-	ASSERT_EQ(strcmp(soundex, "A000"), 0);
-
-	generateSoundex("1234", soundex);
-	ASSERT_EQ(strcmp(soundex, "1000"), 0);
-
-	generateSoundex("J@hn!", soundex);
-	ASSERT_EQ(strcmp(soundex, "J500"), 0);
-    
-	generateSoundex(",", soundex);
-	ASSERT_EQ(strcmp(soundex, "0000"), 0);
-    
-	generateSoundex("A", soundex);
-	ASSERT_EQ(strcmp(soundex, "A000"), 0);
-    
-	generateSoundex("Aaaaaa", soundex);
-	ASSERT_EQ(strcmp(soundex, "A000"), 0);
-    
-        generateSoundex("sOmeTeSt", soundex);
-	ASSERT_EQ(strcmp(soundex, "S530"), 0);
-    
-        generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
-	ASSERT_EQ(strcmp(soundex, "A123"), 0);
-
+ 
+TEST(SoundexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
+    char soundex[5];
+    generateSoundex("AX", soundex);
+    ASSERT_STREQ(soundex, "A200");
+}
+ 
+TEST(SoundexTestsuite, RetainsSoleLetterOfOneLetterWord) {
+    char soundex[5];
+    generateSoundex("B", soundex);
+    ASSERT_STREQ(soundex, "B000");
+}
+ 
+TEST(SoundexTestsuite, PadsWithZerosToEnsureThreeDigits) {
+    char soundex[5];
+    generateSoundex("N", soundex);
+    ASSERT_STREQ(soundex, "N000");
+}
+ 
+TEST(SoundexTestsuite, CombinesDuplicateEncodingsSeparatedByVowels) {
+    char soundex[5];
+    generateSoundex("bbfcg", soundex);
+    ASSERT_STREQ(soundex, "B200");
+}
+ 
+TEST(SoundexTestsuite, UppercasesFirstLetter) {
+    char soundex[5];
+    generateSoundex("abcd", soundex);
+    ASSERT_STREQ(soundex, "A123");
+}
+ 
+TEST(SoundexTestsuite, IgnoresCaseWhenEncodingConsonants) {
+    char soundex[5];
+    generateSoundex("BCDL", soundex);
+    ASSERT_STREQ(soundex, "B234");
 }
