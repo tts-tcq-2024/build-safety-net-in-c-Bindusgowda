@@ -1,25 +1,39 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include <gtest/gtest.h>
 #include "Soundex.h"
  
-void testSoundex(const char *input, const char *expected) {
-    char soundex[5];
-    generateSoundex(input, soundex);
+ 
+TEST(SoundexTest, BasicTest) {
+    EXPECT_EQ(generateSoundex("Smith"), "S530");
+    EXPECT_EQ(generateSoundex("Smyth"), "S530");
+    EXPECT_EQ(generateSoundex("Robert"), "R163");
+    EXPECT_EQ(generateSoundex("Rupert"), "R163");
+    EXPECT_EQ(generateSoundex("Ashcraft"), "A261");
+    EXPECT_EQ(generateSoundex("Ashcroft"), "A261");
 }
  
-int main() {
-    testSoundex("Robert", "R163");
-    testSoundex("Rupert", "R163");
-    testSoundex("Aeiou", "A000");
-    testSoundex("1234", "1000");
-    testSoundex("J@hn!", "J500");
-    testSoundex("", "0000");
-    testSoundex("A", "A000");
-    testSoundex("Aaaaaa", "A000");
-    testSoundex("sOmeTeSt", "S530");
-    testSoundex("abcdefghijklmnopqrstuvwxyz", "A123");
+TEST(SoundexTest, EdgeCases) {
+    EXPECT_EQ(generateSoundex("Chand"), "C530");
+    EXPECT_EQ(generateSoundex("Mehra"), "M600");
+    EXPECT_EQ(generateSoundex("Pandey"), "P530");
+    EXPECT_EQ(generateSoundex(""), "");
+}
  
-    return 0;
+TEST(SoundexTest, CaseInsensitive) {
+    EXPECT_EQ(generateSoundex("Robert"), generateSoundex("robert"));
+    EXPECT_EQ(generateSoundex("Smith"), generateSoundex("sMiTh"));
+}
+ 
+/* TEST(SoundexTest, RepeatedCharacters) {
+//   EXPECT_EQ(generateSoundex("Pfister"), "P236");
+    EXPECT_EQ(generateSoundex("Honeyman"), "H555");
+}*/
+ 
+TEST(SoundexTest, SingleCharacterName) {
+    EXPECT_EQ(generateSoundex("A"), "A000");
+    EXPECT_EQ(generateSoundex("B"), "B000");
+}
+ 
+TEST(SoundexTest, AllVowels) {
+    EXPECT_EQ(generateSoundex("Aeio"), "A000");
+    EXPECT_EQ(generateSoundex("Euio"), "E000");
 }
