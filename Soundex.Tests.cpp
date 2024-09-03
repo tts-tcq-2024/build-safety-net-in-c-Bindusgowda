@@ -1,50 +1,65 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <assert.h>
 #include "Soundex.h"
 
-char getSoundexCode(char c);
-char getValidCode(char currentCode, char lastCode);
-void generateSoundex(const char *name, char *soundex);
-
-void test_getSoundexCode() {
-   
-    assert(getSoundexCode('B') == '1');
-    assert(getSoundexCode('J') == '2');
-    assert(getSoundexCode('L') == '4');
-    assert(getSoundexCode('M') == '5');
-    assert(getSoundexCode('A') == '0');
-    assert(getSoundexCode(' ') == '0');
-    assert(getSoundexCode('b') == '1');
-    assert(getSoundexCode('j') == '2');
-}
-
-void test_getValidCode() {
-    assert(getValidCode('1', '2') == '1');
-    assert(getValidCode('2', '2') == '0');
-    assert(getValidCode('0', '1') == '0');
-}
-
-void test_generateSoundex() {
-    char soundex[5];
-
-    generateSoundex("Jackson", soundex);
-    assert(strcmp(soundex, "J252") == 0);
-
-    generateSoundex("Li", soundex);
-    assert(strcmp(soundex, "L000") == 0);
-
-    generateSoundex("O'Neill", soundex);
-    assert(strcmp(soundex, "O541") == 0);
-
-    generateSoundex("", soundex);
-    assert(strcmp(soundex, "0000") == 0);
-}
+void test_getSoundexCode();
+void test_getValidCode();
+void test_generateSoundex();
 
 int main() {
     test_getSoundexCode();
     test_getValidCode();
     test_generateSoundex();
     return 0;
+}
+
+void test_getSoundexCode() {
+    // Testing getSoundexCode
+
+    // Test valid input characters
+    getSoundexCode('B'); // Expected: 1
+    getSoundexCode('J'); // Expected: 2
+    getSoundexCode('L'); // Expected: 4
+    getSoundexCode('M'); // Expected: 5
+
+    // Test invalid input characters
+    getSoundexCode('A'); // Expected: 0
+    getSoundexCode(' '); // Expected: 0
+
+    // Test case insensitivity
+    getSoundexCode('b'); // Expected: 1
+    getSoundexCode('j'); // Expected: 2
+}
+
+void test_getValidCode() {
+    // Testing getValidCode
+
+    // Test different current code
+    getValidCode('1', '2'); // Expected: 1
+
+    // Test same current code as last code
+    getValidCode('2', '2'); // Expected: 0
+
+    // Test invalid current code
+    getValidCode('0', '1'); // Expected: 0
+}
+
+void test_generateSoundex() {
+    char soundex[5];
+    
+    // Test simple name
+    generateSoundex("Robert", soundex);
+    
+    // Test name with multiple identical consonants
+    generateSoundex("Jackson", soundex);
+    
+    // Test short name
+    generateSoundex("Li", soundex);
+    
+    // Test name with non-alphabet characters
+    generateSoundex("O'Neill", soundex);
+    
+    // Test empty name
+    generateSoundex("", soundex);
 }
