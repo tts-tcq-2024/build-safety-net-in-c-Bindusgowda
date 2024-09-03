@@ -2,6 +2,7 @@
 #include <CUnit/Basic.h>
 #include <ctype.h>
 #include <string.h>
+#include "Soundex.h"
 
 // Test cases
 void test_getSoundexCode(void) {
