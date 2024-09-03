@@ -3,9 +3,10 @@
 #include <ctype.h>
 #include <gtest/gtest.h>
 #include "Soundex.h"
- 
-TEST(const char *input, const char *expected) {
+
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
     char soundex[5];
+    generateSoundex("AX", soundex);
     generateSoundex("Robert", "R163");
     generateSoundex("Rupert", "R163");
     generateSoundex("Aeiou", "A000");
@@ -16,5 +17,5 @@ TEST(const char *input, const char *expected) {
     generateSoundex("Aaaaaa", "A000");
     generateSoundex("sOmeTeSt", "S530");
     generateSoundex("abcdefghijklmnopqrstuvwxyz", "A123");
+
 }
-    
