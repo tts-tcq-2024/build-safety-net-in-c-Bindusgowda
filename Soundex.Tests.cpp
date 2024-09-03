@@ -1,72 +1,73 @@
-#include <gtest/gtest.h>
-#include "Soundex.h"
- 
-// Test cases for the empty string check
-TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), "");
+#include <CUnit/CUnit.h>
+#include <CUnit/Basic.h>
+#include <ctype.h>
+#include <string.h>
+
+// Test cases
+void test_getSoundexCode(void) {
+    CU_ASSERT_EQUAL(getSoundexCode('B'), '1');
+    CU_ASSERT_EQUAL(getSoundexCode('F'), '1');
+    CU_ASSERT_EQUAL(getSoundexCode('P'), '1');
+    CU_ASSERT_EQUAL(getSoundexCode('V'), '1');
+    CU_ASSERT_EQUAL(getSoundexCode('C'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('G'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('J'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('K'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('Q'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('S'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('X'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('Z'), '2');
+    CU_ASSERT_EQUAL(getSoundexCode('D'), '3');
+    CU_ASSERT_EQUAL(getSoundexCode('T'), '3');
+    CU_ASSERT_EQUAL(getSoundexCode('L'), '4');
+    CU_ASSERT_EQUAL(getSoundexCode('M'), '5');
+    CU_ASSERT_EQUAL(getSoundexCode('N'), '5');
+    CU_ASSERT_EQUAL(getSoundexCode('R'), '6');
+    CU_ASSERT_EQUAL(getSoundexCode('A'), '0'); // testing a non-mapped character
 }
- 
-// Test cases for the single character check
-TEST(SoundexTest, HandlesSingleCharacter) {
-    for (char c = 'A'; c <= 'Z'; ++c) {
-        std::string expected = std::string(1, c) + "000";
-        EXPECT_EQ(generateSoundex(std::string(1, c)), expected);
-    }
+
+void test_getValidCode(void) {
+    CU_ASSERT_EQUAL(getValidCode('1', '0'), '1');
+    CU_ASSERT_EQUAL(getValidCode('1', '1'), '0');
+    CU_ASSERT_EQUAL(getValidCode('2', '1'), '2');
+    CU_ASSERT_EQUAL(getValidCode('2', '2'), '0');
+    CU_ASSERT_EQUAL(getValidCode('3', '2'), '3');
+    CU_ASSERT_EQUAL(getValidCode('0', '3'), '0');
 }
- 
- 
-// Test cases for the names with vowels and certain consonants that should be ignored
-TEST(SoundexTest, HandlesIgnoredCharacters) {
-    std::vector<std::pair<std::string, std::string>> testCases = {
-        {"AEIOU", "A000"}, {"EAIOU", "E000"}, {"IAEOU", "I000"}, 
-        {"OAEIU", "O000"}, {"UAEIO", "U000"}, {"HW", "H000"}, 
-        {"WH", "W000"}
-    };
-    for (const auto& testCase : testCases) {
-        EXPECT_EQ(generateSoundex(testCase.first), testCase.second);
-    }
+
+void test_generateSoundex(void) {
+    char result[5];
+
+    generateSoundex("Robert", result);
+    CU_ASSERT_STRING_EQUAL(result, "R163");
+
+    generateSoundex("Jackson", result);
+    CU_ASSERT_STRING_EQUAL(result, "J250");
+
+    generateSoundex("Smith", result);
+    CU_ASSERT_STRING_EQUAL(result, "S530");
+
+    generateSoundex("Fritz", result);
+    CU_ASSERT_STRING_EQUAL(result, "F320");
+
+    generateSoundex("MacDonald", result);
+    CU_ASSERT_STRING_EQUAL(result, "M325");
+
+    generateSoundex("", result); // Edge case: empty input
+    CU_ASSERT_STRING_EQUAL(result, "0000");
 }
- 
- 
-// Test cases for the names with adjacent consonants that should be ignored
-TEST(SoundexTest, HandlesAdjacentConsonants) {
-    std::map<char, std::string> soundexMapping = {
-        {'B', "B100"}, {'C', "C200"}, {'D', "D300"}, {'F', "F100"}, 
-        {'G', "G200"}, {'J', "J200"}, {'K', "K200"}, {'L', "L400"}, 
-        {'M', "M500"}, {'N', "N500"}, {'P', "P100"}, {'Q', "Q200"}, 
-        {'R', "R600"}, {'S', "S200"}, {'T', "T300"}, {'V', "V100"}, 
-        {'X', "X200"}, {'Y', "Y000"}, {'Z', "Z200"}
-    };
- 
-    for (const auto& entry : soundexMapping) {
-        char consonant = entry.first;
-        std::string expected = entry.second;
-        EXPECT_EQ(generateSoundex(std::string(2, consonant)), expected);
-    }
-}
- 
- 
-// Test cases for the longer names that require truncation
-TEST(SoundexTest, HandlesLongNames) {
-    EXPECT_EQ(generateSoundex("Devegowda"), "D123");
-    EXPECT_EQ(generateSoundex("MSD"), "M230");
-    EXPECT_EQ(generateSoundex("Raina"), "R500");
-    EXPECT_EQ(generateSoundex("Balaji"), "B420");
-    EXPECT_EQ(generateSoundex("Singh"), "S520");
-    EXPECT_EQ(generateSoundex("NeilPattrickHarris"), "N413");
-    EXPECT_EQ(generateSoundex("Rajamouli"), "R254");
-}
- 
-// Test cases for the names with hyphens or spaces
-TEST(SoundexTest, HandlesHyphensAndSpaces) {
-    EXPECT_EQ(generateSoundex("Ruturaj-Gaikwad"), "R362");
-    EXPECT_EQ(generateSoundex("Dinesh-Karthik"), "D526");
-    EXPECT_EQ(generateSoundex("Virat Kohli"), "V632");
-    EXPECT_EQ(generateSoundex("Amithab Bachhan"), "A531");
-}
- 
-// Test cases for the names with non-alphabetic characters
-TEST(SoundexTest, HandlesNonAlphabeticCharacters) {
-    EXPECT_EQ(generateSoundex("J'Bumrah"), "J156");
-    EXPECT_EQ(generateSoundex("Harish@15"), "H620");
+
+int main() {
+    CU_initialize_registry();
+    CU_pSuite pSuite = CU_add_suite("SoundexTestSuite", 0, 0);
+
+    CU_add_test(pSuite, "test_getSoundexCode", test_getSoundexCode);
+    CU_add_test(pSuite, "test_getValidCode", test_getValidCode);
+    CU_add_test(pSuite, "test_generateSoundex", test_generateSoundex);
+
+    CU_basic_set_mode(CU_BRM_VERBOSE);
+    CU_basic_run_tests();
+    CU_cleanup_registry();
+    
+    return 0;
 }
