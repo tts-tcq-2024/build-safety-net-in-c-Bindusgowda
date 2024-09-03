@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <gtest/gtest.h>
 #include "Soundex.h"
  
 void testSoundex(const char *input, const char *expected) {
