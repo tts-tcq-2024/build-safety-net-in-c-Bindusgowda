@@ -1,21 +1,35 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <gtest/gtest.h>
 #include "Soundex.h"
 
-TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
-    char soundex[5];
-    generateSoundex("AX", soundex);
-    generateSoundex("Robert", "R163");
-    generateSoundex("Rupert", "R163");
-    generateSoundex("Aeiou", "A000");
-    generateSoundex("1234", "1000");
-    generateSoundex("J@hn!", "J500");
-    generateSoundex("", "0000");
-    generateSoundex("A", "A000");
-    generateSoundex("Aaaaaa", "A000");
-    generateSoundex("sOmeTeSt", "S530");
-    generateSoundex("abcdefghijklmnopqrstuvwxyz", "A123");
+TEST(SoudexTestsuite, testSoundex) {
+	char soundex[MAX_CODE_LENGTH + 1];
+	generateSoundex("Robert", soundex);
+	ASSERT_EQ(strcmp(soundex, "R163"), 0);
+
+	generateSoundex("Rupert", soundex);
+	ASSERT_EQ(strcmp(soundex, "R163"), 0);
+
+	generateSoundex("Aeiou", soundex);
+	ASSERT_EQ(strcmp(soundex, "A000"), 0);
+
+	generateSoundex("1234", soundex);
+	ASSERT_EQ(strcmp(soundex, "1000"), 0);
+
+	generateSoundex("J@hn!", soundex);
+	ASSERT_EQ(strcmp(soundex, "J500"), 0);
+    
+	generateSoundex(",", soundex);
+	ASSERT_EQ(strcmp(soundex, "0000"), 0);
+    
+	generateSoundex("A", soundex);
+	ASSERT_EQ(strcmp(soundex, "A000"), 0);
+    
+	generateSoundex("Aaaaaa", soundex);
+	ASSERT_EQ(strcmp(soundex, "A000"), 0);
+    
+    generateSoundex("sOmeTeSt", soundex);
+	ASSERT_EQ(strcmp(soundex, "S530"), 0);
+    
+    generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
+	ASSERT_EQ(strcmp(soundex, "A123"), 0);
 
 }
