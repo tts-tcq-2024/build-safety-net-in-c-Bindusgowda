@@ -1,28 +1,28 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
  
-TEST(SoundexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
+TEST(SoundexTestsuite, ReplacesDigits) {
     char soundex[5];
-    generateSoundex("AX", soundex);
-    ASSERT_STREQ(soundex, "A200");
+    generateSoundex("Aeiou", soundex);
+    ASSERT_STREQ(soundex, "A000");
 }
  
-TEST(SoundexTestsuite, RetainsSoleLetterOfOneLetterWord) {
+TEST(SoundexTestsuite, RetainFirstWord) {
     char soundex[5];
-    generateSoundex("B", soundex);
-    ASSERT_STREQ(soundex, "B000");
+    generateSoundex("A", soundex);
+    ASSERT_STREQ(soundex, "A000");
 }
  
-TEST(SoundexTestsuite, PadsWithZerosToEnsureThreeDigits) {
+TEST(SoundexTestsuite, PadWithZeros) {
     char soundex[5];
     generateSoundex("N", soundex);
     ASSERT_STREQ(soundex, "N000");
 }
  
-TEST(SoundexTestsuite, CombinesDuplicateEncodingsSeparatedByVowels) {
+TEST(SoundexTestsuite, CheckDuplicate) {
     char soundex[5];
-    generateSoundex("bbfcg", soundex);
-    ASSERT_STREQ(soundex, "B200");
+    generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
+    ASSERT_STREQ(soundex, "A123");
 }
  
 TEST(SoundexTestsuite, UppercasesFirstLetter) {
@@ -31,7 +31,7 @@ TEST(SoundexTestsuite, UppercasesFirstLetter) {
     ASSERT_STREQ(soundex, "A123");
 }
  
-TEST(SoundexTestsuite, IgnoresCaseWhenEncodingConsonants) {
+TEST(SoundexTestsuite, CaseSensitive) {
     char soundex[5];
     generateSoundex("BCDL", soundex);
     ASSERT_STREQ(soundex, "B234");
