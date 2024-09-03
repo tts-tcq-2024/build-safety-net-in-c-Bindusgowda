@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
  
-void testSoundex(const char *input, const char *expected) {
+TEST(const char *input, const char *expected) {
     char soundex[5];
     generateSoundex("Robert", "R163");
     generateSoundex("Rupert", "R163");
@@ -16,6 +16,5 @@ void testSoundex(const char *input, const char *expected) {
     generateSoundex("Aaaaaa", "A000");
     generateSoundex("sOmeTeSt", "S530");
     generateSoundex("abcdefghijklmnopqrstuvwxyz", "A123");
- 
-    return 0;
 }
+    
