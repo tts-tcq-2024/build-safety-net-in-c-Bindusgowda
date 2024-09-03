@@ -27,14 +27,12 @@ char getSoundexCode(char c) {
         }
     }
  
-        return '0'; 
 }
  
 char getValidCode(char currentCode, char lastCode) {
     if (currentCode != '0' && currentCode != lastCode) {
         return currentCode;
     }
-    return '0';
 }
  
 void generateSoundex(const char *name, char *soundex) {
