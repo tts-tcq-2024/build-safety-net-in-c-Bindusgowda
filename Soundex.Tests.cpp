@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
  
-TEST(SoundexTestsuite, ReplacesDigits) {
+TEST(SoundexTestsuite, ReplaceConstatntsWithDigitsAfterFirstLetter) {
     char soundex[5];
     generateSoundex("Aeiou", soundex);
     ASSERT_STREQ(soundex, "A000");
 }
  
-TEST(SoundexTestsuite, RetainFirstWord) {
+TEST(SoundexTestsuite, RetainFirstWordAndAppendZeros) {
     char soundex[5];
     generateSoundex("A", soundex);
     ASSERT_STREQ(soundex, "A000");
@@ -25,7 +25,7 @@ TEST(SoundexTestsuite, CheckDuplicate) {
     ASSERT_STREQ(soundex, "A123");
 }
  
-TEST(SoundexTestsuite, UppercasesFirstLetter) {
+TEST(SoundexTestsuite, UppercasesFirstLetterAndReplaceWithDigits) {
     char soundex[5];
     generateSoundex("abcd", soundex);
     ASSERT_STREQ(soundex, "A123");
