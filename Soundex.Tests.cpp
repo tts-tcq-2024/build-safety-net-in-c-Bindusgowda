@@ -7,19 +7,13 @@ TEST(SoundexTestsuite, ReplaceConstatntsWithDigitsAfterFirstLetter) {
     ASSERT_STREQ(soundex, "A000");
 }
  
-TEST(SoundexTestsuite, RetainFirstWordAndAppendZeros) {
-    char soundex[5];
-    generateSoundex("A", soundex);
-    ASSERT_STREQ(soundex, "A000");
-}
- 
-TEST(SoundexTestsuite, PadWithZeros) {
+TEST(SoundexTestsuite, AppendThreeZerosIfResultContainsLessThanThreeDigits) {
     char soundex[5];
     generateSoundex("N", soundex);
     ASSERT_STREQ(soundex, "N000");
 }
  
-TEST(SoundexTestsuite, CheckDuplicate) {
+TEST(SoundexTestsuite, RemoveAllExceptTheFirstLetterAndThreeDigitsAfterIt) {
     char soundex[5];
     generateSoundex("abcdefghijklmnopqrstuvwxyz", soundex);
     ASSERT_STREQ(soundex, "A123");
@@ -31,7 +25,7 @@ TEST(SoundexTestsuite, UppercasesFirstLetterAndReplaceWithDigits) {
     ASSERT_STREQ(soundex, "A123");
 }
  
-TEST(SoundexTestsuite, CaseSensitive) {
+TEST(SoundexTestsuite, CheckForCaseSensitive) {
     char soundex[5];
     generateSoundex("BCDL", soundex);
     ASSERT_STREQ(soundex, "B234");
