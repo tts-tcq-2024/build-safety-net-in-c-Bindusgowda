@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
  
-TEST(SoundexTestsuite, ReplaceConstatntsWithDigitsAfterFirstLetter) {
+TEST(SoundexTestsuite, ReplaceConstatntsWithDigitAfterFirstLetter) {
     char soundex[5];
     generateSoundex("Aeiou", soundex);
     ASSERT_STREQ(soundex, "A000");
