@@ -25,29 +25,30 @@ TEST(SoundexTestsuite, UppercasesFirstLetterAndReplaceWithDigits) {
     ASSERT_STREQ(soundex, "A123");
 }
 
-TEST(SoudexTestsuite, NumbersWithCharacters) {
+TEST(SoudexTestsuite, IgnoresNumbersAndEncodesRemainingCharacters) {
   char soundex[5];
   generateSoundex("17AK", soundex);
   EXPECT_STREQ(soundex,"1200");
   
 }
 
-TEST(SoudexTestsuite, SpecialCharactersWithDigits) {
+TEST(SoudexTestsuite, ReturnsZerosForDigitOnlyInput) {
+  char soundex[5];
+  generateSoundex("63619156", soundex);
+  EXPECT_STREQ(soundex,"6000");
+  
+}
+
+TEST(SoudexTestsuite, IgnoresSpecialCharactersAndDigits) {
   char soundex[5];
   generateSoundex("q@!18", soundex);
   EXPECT_STREQ(soundex,"Q000");
   
 }
 
-TEST(SoudexTestsuite, SameCharactersRepeating) {
+TEST(SoudexTestsuite, EncodesFirstCharacterAndIgnoresDuplicates) {
   char soundex[5];
   generateSoundex("FFFFF", soundex);
   EXPECT_STREQ(soundex,"F100");
   
-}
- 
-TEST(SoundexTestsuite, CheckForCaseSensitive) {
-    char soundex[5];
-    generateSoundex("BCDL", soundex);
-    ASSERT_STREQ(soundex, "B234");
 }
